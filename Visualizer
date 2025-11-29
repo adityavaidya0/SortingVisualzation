@@ -1,0 +1,12 @@
+package SortingVisualzation.Sorting_visuazation;
+
+
+    public class Visualizer {
+        static void printStep(int[] arr, String action) {
+            System.out.print(action + ": ");
+            for (int n : arr) System.out.print(n + " ");
+            System.out.println();
+        }
+    }
+
+
