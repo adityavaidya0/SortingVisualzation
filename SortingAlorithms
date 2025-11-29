@@ -1,0 +1,167 @@
+package SortingVisualzation.Sorting_visuazation;
+    import java.util.Random;
+
+
+public class SortingAlgorithms {
+
+    int size = 20;
+    int[] arr = new int[size];
+
+    public SortingAlgorithms() {
+        generateArray();
+    }
+
+    // Generate random array
+    void generateArray() {
+        Random r = new Random();
+        for (int i = 0; i < size; i++) {
+            arr[i] = r.nextInt(100);
+        }
+    }
+
+    // Display array
+    void displayArray() {
+        for (int n : arr) System.out.print(n + " ");
+        System.out.println();
+    }
+
+    // Print complexity
+    void printComplexity(String name, String best, String avg, String worst, String space) {
+        System.out.println("\n===== " + name + " =====");
+        System.out.println("Best Case: " + best);
+        System.out.println("Average Case: " + avg);
+        System.out.println("Worst Case: " + worst);
+        System.out.println("Space Complexity: " + space + "\n");
+    }
+
+    // Visual effect
+    void visualize(int i, int j) {
+        System.out.print("Comparing " + arr[i] + " and " + arr[j] + " => ");
+        displayArray();
+        try { Thread.sleep(80); } catch (Exception ignored) {}
+    }
+
+    // ---------- SELECTION SORT ----------
+    void selectionSort() {
+        for (int i = 0; i < size - 1; i++) {
+            int min = i;
+            for (int j = i + 1; j < size; j++) {
+                visualize(min, j);
+                if (arr[j] < arr[min]) min = j;
+            }
+            swap(i, min);
+        }
+        displayArray();
+    }
+
+    // ---------- INSERTION SORT ----------
+    void insertionSort() {
+        for (int i = 1; i < size; i++) {
+            int key = arr[i];
+            int j = i - 1;
+            while (j >= 0 && arr[j] > key) {
+                visualize(j, j + 1);
+                arr[j + 1] = arr[j];
+                j--;
+            }
+            arr[j + 1] = key;
+        }
+        displayArray();
+    }
+
+    // ---------- BUBBLE SORT ----------
+    void bubbleSort() {
+        for (int i = 0; i < size - 1; i++) {
+            for (int j = 0; j < size - i - 1; j++) {
+                visualize(j, j + 1);
+                if (arr[j] > arr[j + 1])
+                    swap(j, j + 1);
+            }
+        }
+        displayArray();
+    }
+
+    // ---------- MERGE SORT ----------
+    void mergeSort(int l, int r) {
+        if (l >= r) return;
+
+        int m = (l + r) / 2;
+        mergeSort(l, m);
+        mergeSort(m + 1, r);
+        merge(l, m, r);
+    }
+
+    void merge(int left, int mid, int right) {
+        int[] temp = new int[right - left + 1];
+        int i = left, j = mid + 1, k = 0;
+
+        while (i <= mid && j <= right) {
+            visualize(i, j);
+            temp[k++] = (arr[i] <= arr[j]) ? arr[i++] : arr[j++];
+        }
+
+        while (i <= mid) temp[k++] = arr[i++];
+        while (j <= right) temp[k++] = arr[j++];
+
+        for (k = 0; k < temp.length; k++)
+            arr[left + k] = temp[k];
+    }
+
+    // ---------- QUICK SORT ----------
+    void quickSort(int l, int r) {
+        if (l >= r) return;
+
+        int pivot = arr[r];
+        int i = l - 1;
+
+        for (int j = l; j < r; j++) {
+            visualize(j, r);
+            if (arr[j] < pivot) {
+                i++;
+                swap(i, j);
+            }
+        }
+
+        swap(i + 1, r);
+        int pi = i + 1;
+
+        quickSort(l, pi - 1);
+        quickSort(pi + 1, r);
+    }
+
+    // ---------- HEAP SORT ----------
+    void heapSort() {
+        int n = size;
+
+        for (int i = n / 2 - 1; i >= 0; i--)
+            heapify(n, i);
+
+        for (int i = n - 1; i > 0; i--) {
+            swap(0, i);
+            heapify(i, 0);
+        }
+        displayArray();
+    }
+
+    void heapify(int n, int i) {
+        int largest = i;
+        int l = 2*i + 1;
+        int r = 2*i + 2;
+
+        if (l < n && arr[l] > arr[largest]) largest = l;
+        if (r < n && arr[r] > arr[largest]) largest = r;
+
+        if (largest != i) {
+            visualize(i, largest);
+            swap(i, largest);
+            heapify(n, largest);
+        }
+    }
+
+    // Swap
+    void swap(int i, int j) {
+        int t = arr[i];
+        arr[i] = arr[j];
+        arr[j] = t;
+    }
+}
